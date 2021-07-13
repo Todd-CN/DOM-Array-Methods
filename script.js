@@ -28,4 +28,34 @@ async function getRandomUser() {
 // Add new object to data array
 function addData(obj) {
   data.push(obj);
+
+  //we still need to display the users in the DOM
+  updateDOM();
 }
+
+// Update DOM
+function updateDOM(providedData = data) {
+  // Clear main div (we don't want to keep adding to it, we want to replace what's already there)
+  main.innerHTML = "<h2><strong>Person</strong>Wealth</h2>";
+
+  // Take providedData and loop through that using forEach method
+  providedData.forEach((item) => {
+    const element = document.createElement("div");
+    element.classList.add("person");
+    element.innerHTML = `<strong>${item.name}</strong> ${formatMoney(
+      item.money
+    )}`;
+
+    // To actually insert it into the DOM
+    main.appendChild(element);
+  });
+}
+
+// Format number as money
+function formatMoney(number) {
+  return "$" + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+  // then, up above in our forEach loop, we wrap item.money in this function
+}
+
+// Event listeners
+addUserBtn.addEventListener("click", getRandomUser);
